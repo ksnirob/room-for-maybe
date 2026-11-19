@@ -1,3 +1,4 @@
+import Today from '../today';
 import ExerciseBatch from '../exercise-batch';
 import PracticeFlow from '../practice-flow';
 import { articles } from '../../lib/lessons';
@@ -89,16 +90,7 @@ export default async function Page({params,searchParams}:Props) {
   const exercise = exercises.find(row=>row.id===sub);
   const active = section==='practice'?'today':section;
   const page = (body:ReactNode) => <Frame privatePage active={active}>{notice}{body}</Frame>;
-  if (section==='today') return page(<><h1>Today</h1><section className="card today-card">
-    <div className="today-art" aria-hidden="true">
-    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="5" y="5" width="14" height="16" rx="2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6m-6 4h4"/>
-    </svg></div>
-    {selected ? <><h2>{selected.title}</h2><dl><dt>What I’ll practice</dt><dd>{selected.action}</dd><dt>The ritual I’ll practice resisting</dt><dd>{selected.ritual}</dd>
-    {selected.goal && <><dt>Why it matters</dt><dd>{selected.goal}</dd></>}</dl>
-    <div className="buttons"><Link className="button" href={'/practice/'+selected.id}>Start practice</Link><Link href="/plan">Choose another exercise</Link></div></>
-    : <><h2>No exercises yet</h2><p>Save an ERP exercise you’re ready to practice.</p><div className="buttons"><Link className="button" href="/plan/new">Add an exercise</Link><Link href="/learn">Learn &amp; resources</Link></div></>}
-    </section></>);
+  if (section==='today') return page(<Today exercises={exercises} sessions={data.sessions} selectedId={selected?.id} name={data.profile?.name}/>);
   if (section==='plan') {
     if (!sub) return page(<div className="plan-page">
       <div className="title"><h1>My plan</h1>{selected && <Link className="button" href="/plan/new">＋ Add an exercise</Link>}</div>
